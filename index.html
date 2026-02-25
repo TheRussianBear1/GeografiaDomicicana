@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Puntos Cardinales por Regiones - República Dominicana</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --accent:#4fd1c5;
+      --accent2:#60a5fa;
+      --danger:#fb7185;
+      --ok:#34d399;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background: radial-gradient(1100px 700px at 20% 10%, rgba(96,165,250,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 30%, rgba(79,209,197,.14), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header{
+      padding: 22px 18px 10px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .title{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+    .badge{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+    }
+    h1{
+      margin:0;
+      font-size: 22px;
+      line-height:1.2;
+      letter-spacing:.2px;
+    }
+    p.sub{
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 75ch;
+    }
+
+    main{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 18px 28px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+    @media (max-width: 920px){
+      main{ grid-template-columns: 1fr; }
+    }
+    .card{
+      background: rgba(17,26,46,.82);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .card h2{
+      margin: 0;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .card .hd{
+      padding: 14px 14px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), transparent);
+    }
+    .card .bd{
+      padding: 14px;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+      user-select:none;
+    }
+    button:hover{
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.06);
+    }
+    button:active{ transform: translateY(1px); }
+    button.primary{
+      border-color: rgba(79,209,197,.55);
+      background: rgba(79,209,197,.10);
+    }
+    button.secondary{
+      border-color: rgba(96,165,250,.55);
+      background: rgba(96,165,250,.10);
+    }
+    button.ghost{
+      background: transparent;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 920px){
+      .layout{ grid-template-columns: 1fr; }
+    }
+
+    /* Compass */
+    .compass{
+      display:grid;
+      place-items:center;
+      padding: 10px;
+    }
+    .compass svg{
+      width: 250px;
+      max-width: 100%;
+      height:auto;
+    }
+    .label{
+      font-family: var(--mono);
+      fill: var(--text);
+      opacity:.9;
+    }
+    .muted{
+      fill: var(--muted);
+      opacity:.9;
+    }
+
+    /* Region grid map */
+    .gridMap{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 86px);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .cell{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 10px;
+      position: relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height: 70px;
+    }
+    .cell .k{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .cell .v{
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .cell.active{
+      border-color: rgba(79,209,197,.60);
+      background: rgba(79,209,197,.10);
+    }
+    .cell.active2{
+      border-color: rgba(96,165,250,.60);
+      background: rgba(96,165,250,.10);
+    }
+    .cell small{
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Lists */
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 540px){
+      .twoCols{ grid-template-columns: 1fr; }
+    }
+    ul{
+      margin: 8px 0 0;
+      padding: 0 0 0 18px;
+      color: var(--text);
+    }
+    li{ margin: 6px 0; color: rgba(234,240,255,.92); }
+    .note{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    /* Quiz */
+    .quizRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin: 10px 0 8px;
+    }
+    .qBox{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .qText{
+      font-weight: 700;
+      margin: 0 0 10px;
+      letter-spacing:.2px;
+    }
+    .answers{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+    }
+    .status{
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .status.ok{ color: var(--ok); }
+    .status.bad{ color: var(--danger); }
+    footer{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 18px 26px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    a{ color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <span class="badge">RD · Geografía · Orientación</span>
+      <div>
+        <h1>🧭 Puntos cardinales por regiones (República Dominicana)</h1>
+        <p class="sub">
+          Selecciona una región para ver ejemplos dominicanos (provincias/zonas), orientación en el mapa y una mini-actividad tipo quiz.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Explorer -->
+    <section class="card">
+      <div class="hd">
+        <h2>Explorador por región</h2>
+        <span class="pill" id="pillHint">Consejo: usa Norte/Sur/Este/Oeste y los intermedios</span>
+      </div>
+      <div class="bd">
+        <div class="controls" id="regionButtons"></div>
+
+        <div class="layout">
+          <div>
+            <div class="qBox">
+              <p class="qText" id="regionTitle">Selecciona una región</p>
+              <div class="twoCols">
+                <div>
+                  <div class="pill">📍 Direcciones asociadas</div>
+                  <ul id="dirList"></ul>
+                </div>
+                <div>
+                  <div class="pill">🇩🇴 Ejemplos dominicanos</div>
+                  <ul id="exList"></ul>
+                </div>
+              </div>
+
+              <div class="note" id="regionNote"></div>
+
+              <div class="gridMap" aria-label="Mapa de direcciones">
+                <div class="cell" data-cell="NW"><div class="k">NO</div><div class="v">Noroeste</div><small>Ej.: Montecristi</small></div>
+                <div class="cell" data-cell="N"><div class="k">N</div><div class="v">Norte</div><small>Ej.: Puerto Plata</small></div>
+                <div class="cell" data-cell="NE"><div class="k">NE</div><div class="v">Noreste</div><small>Ej.: Samaná</small></div>
+
+                <div class="cell" data-cell="W"><div class="k">O</div><div class="v">Oeste</div><small>Ej.: Dajabón</small></div>
+                <div class="cell" data-cell="C"><div class="k">●</div><div class="v">Centro</div><small>Ej.: La Vega</small></div>
+                <div class="cell" data-cell="E"><div class="k">E</div><div class="v">Este</div><small>Ej.: Punta Cana</small></div>
+
+                <div class="cell" data-cell="SW"><div class="k">SO</div><div class="v">Suroeste</div><small>Ej.: Barahona</small></div>
+                <div class="cell" data-cell="S"><div class="k">S</div><div class="v">Sur</div><small>Ej.: S. Dgo</small></div>
+                <div class="cell" data-cell="SE"><div class="k">SE</div><div class="v">Sureste</div><small>Ej.: San Pedro</small></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Compass -->
+          <aside class="card">
+            <div class="hd">
+              <h2>Brújula</h2>
+              <button class="ghost" id="toggleInter">Intermedios: ON</button>
+            </div>
+            <div class="bd compass">
+              <svg viewBox="0 0 300 300" role="img" aria-label="Brújula con puntos cardinales">
+                <defs>
+                  <radialGradient id="g" cx="50%" cy="45%" r="70%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,.10)"/>
+                    <stop offset="100%" stop-color="rgba(255,255,255,.02)"/>
+                  </radialGradient>
+                </defs>
+
+                <circle cx="150" cy="150" r="120" fill="url(#g)" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+                <circle cx="150" cy="150" r="86" fill="transparent" stroke="rgba(255,255,255,.10)" stroke-width="1.5"/>
+
+                <!-- Needle -->
+                <path d="M150 42 L165 150 L150 258 L135 150 Z" fill="rgba(96,165,250,.20)" stroke="rgba(96,165,250,.45)" stroke-width="1"/>
+                <path d="M150 42 L156 150 L150 258 L144 150 Z" fill="rgba(79,209,197,.25)" stroke="rgba(79,209,197,.55)" stroke-width="1"/>
+
+                <!-- Main labels -->
+                <text class="label" x="150" y="28" text-anchor="middle">N</text>
+                <text class="label" x="150" y="286" text-anchor="middle">S</text>
+                <text class="label" x="20" y="156" text-anchor="middle">O</text>
+                <text class="label" x="280" y="156" text-anchor="middle">E</text>
+
+                <!-- Intermediates -->
+                <g id="interLabels">
+                  <text class="muted" x="72" y="78" text-anchor="middle">NO</text>
+                  <text class="muted" x="228" y="78" text-anchor="middle">NE</text>
+                  <text class="muted" x="72" y="238" text-anchor="middle">SO</text>
+                  <text class="muted" x="228" y="238" text-anchor="middle">SE</text>
+                </g>
+
+                <circle cx="150" cy="150" r="5" fill="rgba(255,255,255,.25)"/>
+              </svg>
+
+              <div class="note">
+                Truco rápido: si miras al <b>Norte</b>, el <b>Este</b> queda a tu derecha y el <b>Oeste</b> a tu izquierda.
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Quiz -->
+    <section class="card">
+      <div class="hd">
+        <h2>Quiz rápido (para estudiantes)</h2>
+        <button class="secondary" id="newQ">Nueva pregunta</button>
+      </div>
+      <div class="bd">
+        <div class="qBox">
+          <p class="qText" id="quizQ">Pulsa “Nueva pregunta”</p>
+          <div class="answers" id="quizA"></div>
+          <div class="status" id="quizS"></div>
+        </div>
+
+        <div class="note">
+          Sugerencia docente: pide que respondan en voz alta “dirección + ejemplo dominicano”.
+          Ej.: “Este: Punta Cana / La Altagracia”.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Hecho para clases/ferias en RD. Puedes editar la lista de provincias por región en el objeto <span style="font-family:var(--mono)">DATA</span> dentro del código.
+  </footer>
+
+  <script>
+    // Datos por región (ejemplos dominicanos). Puedes ajustar según tu clase.
+    const DATA = [
+      {
+        key: "NORTE",
+        label: "Norte (Atlántico)",
+        directions: ["N"],
+        mapCells: ["N"],
+        examples: ["Puerto Plata", "Espaillat (Moca)", "María Trinidad Sánchez (Nagua)", "La Vega (zona norte/centro)", "Costa Atlántica"],
+        note: "En el Norte domina la influencia del Océano Atlántico y hay fuerte actividad turística y portuaria (ej.: Puerto Plata)."
+      },
+      {
+        key: "SUR",
+        label: "Sur (Caribe)",
+        directions: ["S"],
+        mapCells: ["S"],
+        examples: ["Santo Domingo", "San Cristóbal", "Peravia (Baní)", "Azua", "Barahona (costa sur)"],
+        note: "Al Sur está el Mar Caribe. Muchas rutas y ciudades clave se desarrollan cerca de la costa sur (Gran Santo Domingo)."
+      },
+      {
+        key: "ESTE",
+        label: "Este (Turismo / Canal de la Mona)",
+        directions: ["E"],
+        mapCells: ["E"],
+        examples: ["La Altagracia (Punta Cana)", "El Seibo", "Hato Mayor", "San Pedro de Macorís (zona este/sureste)", "La Romana"],
+        note: "El Este concentra polos turísticos y conecta hacia el Canal de la Mona. Excelente para trabajar economía (turismo) + geografía."
+      },
+      {
+        key: "OESTE",
+        label: "Oeste (Frontera con Haití)",
+        directions: ["O"],
+        mapCells: ["W"],
+        examples: ["Dajabón", "Elías Piña", "Independencia", "Pedernales", "Zona fronteriza"],
+        note: "El Oeste es clave para hablar de frontera, comercio, control territorial y planificación (puntos de paso, mercados, carreteras)."
+      },
+      {
+        key: "NORESTE",
+        label: "Noreste (NE)",
+        directions: ["NE"],
+        mapCells: ["NE"],
+        examples: ["Samaná", "Parte de Duarte (San Francisco de Macorís)", "María Trinidad Sánchez", "Costa de Samaná (bahías)"],
+        note: "El Noreste es ideal para ver bahías, costas y turismo/ecosistemas (Samaná)."
+      },
+      {
+        key: "NOROESTE",
+        label: "Noroeste (NO)",
+        directions: ["NO"],
+        mapCells: ["NW"],
+        examples: ["Montecristi", "Valverde (Mao)", "Santiago Rodríguez", "Línea Noroeste"],
+        note: "En el Noroeste se trabajan llanuras, agricultura y zonas semiáridas (según área), además de la cercanía con la frontera norte."
+      },
+      {
+        key: "SURESTE",
+        label: "Sureste (SE)",
+        directions: ["SE"],
+        mapCells: ["SE"],
+        examples: ["San Pedro de Macorís", "La Romana", "Boca Chica (zona sureste del Gran SD)", "Guayacanes"],
+        note: "El Sureste conecta costa caribeña + actividades industriales/turísticas (San Pedro/La Romana) y logística."
+      },
+      {
+        key: "SUROESTE",
+        label: "Suroeste (SO)",
+        directions: ["SO"],
+        mapCells: ["SW"],
+        examples: ["Barahona", "Pedernales", "Bahoruco", "Independencia", "Lago Enriquillo (zona suroeste)"],
+        note: "El Suroeste permite abordar relieve, áreas protegidas, clima más seco en zonas y elementos únicos como el Lago Enriquillo."
+      },
+      {
+        key: "CENTRO",
+        label: "Centro (Cordillera Central)",
+        directions: ["C (referencia)"],
+        mapCells: ["C"],
+        examples: ["La Vega", "Monseñor Nouel (Bonao)", "San José de Ocoa", "Jarabacoa/Constanza (zona montañosa)"],
+        note: "El Centro (Cordillera Central) es perfecto para explicar relieve, clima de montaña y fuentes de ríos importantes."
+      }
+    ];
+
+    const btnWrap = document.getElementById("regionButtons");
+    const regionTitle = document.getElementById("regionTitle");
+    const dirList = document.getElementById("dirList");
+    const exList = document.getElementById("exList");
+    const regionNote = document.getElementById("regionNote");
+    const toggleInter = document.getElementById("toggleInter");
+    const interLabels = document.getElementById("interLabels");
+    const cells = Array.from(document.querySelectorAll(".cell"));
+
+    let showInter = true;
+    let current = null;
+
+    function clearActive(){
+      cells.forEach(c => {
+        c.classList.remove("active");
+        c.classList.remove("active2");
+      });
+    }
+
+    function setRegion(item){
+      current = item;
+      regionTitle.textContent = "📌 " + item.label;
+
+      dirList.innerHTML = "";
+      item.directions.forEach(d => {
+        const li = document.createElement("li");
+        li.textContent = d;
+        dirList.appendChild(li);
+      });
+
+      exList.innerHTML = "";
+      item.examples.forEach(e => {
+        const li = document.createElement("li");
+        li.textContent = e;
+        exList.appendChild(li);
+      });
+
+      regionNote.textContent = item.note;
+
+      clearActive();
+      // Resaltar casillas del mapa según región
+      item.mapCells.forEach(code => {
+        const el = document.querySelector(`.cell[data-cell="${code}"]`);
+        if (el) el.classList.add("active");
+      });
+
+      // Si es Norte/Sur/Este/Oeste, resalta también el centro como referencia visual
+      const isMain = ["N","S","E","W"].includes(item.mapCells[0]);
+      if (isMain){
+        const c = document.querySelector(`.cell[data-cell="C"]`);
+        if (c) c.classList.add("active2");
+      }
+    }
+
+    function makeButtons(){
+      const order = ["NORTE","SUR","ESTE","OESTE","NORESTE","NOROESTE","SURESTE","SUROESTE","CENTRO"];
+      const byKey = Object.fromEntries(DATA.map(x => [x.key, x]));
+
+      order.forEach(k => {
+        const item = byKey[k];
+        const b = document.createElement("button");
+        b.textContent = item.label;
+        b.className = (["NORTE","SUR","ESTE","OESTE"].includes(item.key)) ? "primary" : "";
+        b.addEventListener("click", () => setRegion(item));
+        btnWrap.appendChild(b);
+      });
+
+      // Default
+      setRegion(byKey["NORTE"]);
+    }
+
+    toggleInter.addEventListener("click", () => {
+      showInter = !showInter;
+      interLabels.style.display = showInter ? "block" : "none";
+      toggleInter.textContent = "Intermedios: " + (showInter ? "ON" : "OFF");
+    });
+
+    // QUIZ
+    const quizQ = document.getElementById("quizQ");
+    const quizA = document.getElementById("quizA");
+    const quizS = document.getElementById("quizS");
+    const newQ = document.getElementById("newQ");
+
+    const quizPool = [
+      { q: "¿Qué dirección corresponde a Punta Cana (La Altagracia) desde el centro del país?", ok: "Este" },
+      { q: "¿Qué dirección corresponde a Puerto Plata desde Santo Domingo (en general)?", ok: "Norte" },
+      { q: "La frontera con Haití (ej.: Dajabón) se ubica hacia el…", ok: "Oeste" },
+      { q: "Barahona y la zona del Lago Enriquillo están hacia el…", ok: "Suroeste" },
+      { q: "Samaná se ubica principalmente hacia el…", ok: "Noreste" },
+      { q: "Montecristi está hacia el…", ok: "Noroeste" },
+      { q: "San Pedro de Macorís se ubica hacia el…", ok: "Sureste" },
+      { q: "El centro montañoso (Cordillera Central) es la zona…", ok: "Centro" }
+    ];
+
+    const options = ["Norte","Sur","Este","Oeste","Noreste","Noroeste","Sureste","Suroeste","Centro"];
+
+    function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function newQuestion(){
+      quizS.textContent = "";
+      quizS.className = "status";
+      const item = pick(quizPool);
+      quizQ.textContent = "🧠 " + item.q;
+
+      // Build answer buttons
+      quizA.innerHTML = "";
+      const shuffled = [...options].sort(() => Math.random() - 0.5);
+      shuffled.forEach(opt => {
+        const b = document.createElement("button");
+        b.textContent = opt;
+        b.addEventListener("click", () => {
+          if (opt === item.ok){
+            quizS.textContent = "✅ Correcto: " + item.ok;
+            quizS.className = "status ok";
+          }else{
+            quizS.textContent = "❌ Incorrecto. Respuesta correcta: " + item.ok;
+            quizS.className = "status bad";
+          }
+        });
+        quizA.appendChild(b);
+      });
+    }
+
+    newQ.addEventListener("click", newQuestion);
+
+    // Init
+    makeButtons();
+  </script>
+</body>
+</html>
